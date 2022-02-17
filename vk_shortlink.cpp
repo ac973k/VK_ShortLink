@@ -19,7 +19,7 @@ VK_ShortLink::VK_ShortLink(QWidget *parent)
 
     btnShortLink = new QPushButton("Get Link"); //кнопка получения ссылки
 
-    token = "3db099fb3db099fb3db099fbe53dc47cbc33db03db099fb621d3dd8a9f49d50e26185e9"; //сюда вставляем свой access_token
+    token = ""; //сюда вставляем свой access_token
 
     SLLayout->addWidget(lblLink, 0, 0); //распологаем кнопки и всякие виджеты как нам удобно
     SLLayout->addWidget(lineLink, 1, 0);
