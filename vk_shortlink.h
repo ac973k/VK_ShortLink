@@ -28,13 +28,12 @@ private:
 
     QPushButton *btnShortLink; //кнопка отправить
 
+    QNetworkAccessManager *networkManager;
 
     QLabel *lblLink; //текст
     QLineEdit *lineLink;
 
     QTextEdit *textSL; //поле, куда будем писать наше сообщение
-
-    QNetworkAccessManager *networkManager; //инициализируем сетевой менеджер
 
 private slots:
     void getLink(); //метод, который отправляет запись на стену

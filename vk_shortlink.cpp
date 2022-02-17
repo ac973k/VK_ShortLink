@@ -19,9 +19,7 @@ VK_ShortLink::VK_ShortLink(QWidget *parent)
 
     btnShortLink = new QPushButton("Get Link"); //кнопка получения ссылки
 
-    networkManager = new QNetworkAccessManager(); //инициализируем сетевой манагер
-
-    token = ""; //сюда вставляем свой access_token
+    token = "3db099fb3db099fb3db099fbe53dc47cbc33db03db099fb621d3dd8a9f49d50e26185e9"; //сюда вставляем свой access_token
 
     SLLayout->addWidget(lblLink, 0, 0); //распологаем кнопки и всякие виджеты как нам удобно
     SLLayout->addWidget(lineLink, 1, 0);
@@ -45,31 +43,43 @@ VK_ShortLink::~VK_ShortLink()
 
 void VK_ShortLink::getLink()
 {
+    networkManager = new QNetworkAccessManager(); //инициализируем сетевой манагер
+
     link = lineLink->text(); //поле ввода текста
 
     QString url; //тут будет наш URL адрес
 
     url = "https://api.vk.com/method/utils.getShortLink?url=" + link + "&access_token=" + token + "&v=5.126";
 
-    QObject::connect(networkManager, SIGNAL(finished(QNetworkReply *)), this, SLOT(onResult(QNetworkReply*))); //отправляем данные и получаем ответ от вк успешно или ошибка
+    QObject::connect(networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onResult(QNetworkReply*))); //отправляем данные и получаем ответ от вк успешно или ошибка
     networkManager->get(QNetworkRequest(url));
 }
 
 void VK_ShortLink::onResult(QNetworkReply *reply)
 {
+    #ifdef QT_DEBUG
+        qDebug() << "Running a debug build";
+    #else
+        qDebug() << "Running a release build";
+    #endif
+
     // Если ошибки отсутсвуют
     if(!reply->error())
     {
         QString str = reply->readAll();
         str.replace("\\", "");
 
-        QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
-        QJsonObject json = doc.object();
-        QJsonObject texts = json.value("response").toObject();
-        QJsonValue jv = texts.value("short_url");
+        #ifdef QT_DEBUG
+            textSL->append(str);
+        #else
+            QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
+            QJsonObject json = doc.object();
+            QJsonObject texts = json.value("response").toObject();
+            QJsonValue jv = texts.value("short_url");
 
-        textSL->clear();
-        textSL->append(jv.toString()); //результат работы выводим
+            textSL->clear();;
+            textSL->append(jv.toString()); //результат работы выводим
+        #endif
         reply->deleteLater();
     }
     else {
