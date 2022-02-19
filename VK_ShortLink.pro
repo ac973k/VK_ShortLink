@@ -2,6 +2,10 @@ QT       += core gui network sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+VERSION = 1.0.0
+
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+
 CONFIG += c++11
 
 # You can make your code fail to compile if it uses deprecated APIs.
